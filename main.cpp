@@ -1,5 +1,4 @@
-/*
-    CS-11 Final project, matrixManip
+/* CS-11 Final project, matrixManip
     Purpose: Manipulate matrices.
 
     @author Cesar Amaral, Remi Leano
@@ -89,6 +88,7 @@ void Matrix::setVect(std::vector< std::vector<double> > newVect) {
 
 void printLogo();
 
+void writeToFile(std::string& name, int& size, double& a, double& b, double& c, double& d);
 ////////////////////////////////////////////////////////////////////////////////
 //                                  MAIN LOOP                                 //
 ////////////////////////////////////////////////////////////////////////////////
@@ -103,26 +103,28 @@ int main() {
     double c = 0.0;
     double d = 0.0;
     bool correctness = false;
-    std::cout << "Please enter the name for your matrix: ";
-    std::cin >> userName;
-    std::cout << "Please enter the size of your matrix: ";
-    std::cin >> userSize;
+    do {
+        std::cout << "Please enter the name for your matrix: ";
+        std::cin >> userName;
+        std::cout << "Please enter the size of your matrix: ";
+        std::cin >> userSize;
     
-    if (userSize == 2){
-        std::cout << "[ " << " a " << " b " << " ]" << std::endl;
-        std::cout << "[ " << " c " << " d " << " ]" << std::endl;
-        std::cout << "Please enter the entries of your matrix in order (alphabetical), with entries separated by spaces: ";
-        std::cin >> a >> b >> c >> d;
-        std::cout << std::setprecision(2);
-        std::cout << std::setprecision(2) << "[  " << a << "  " << b << "  ]" << std::endl;
-        std::cout << "[  " << c << "  " << d << "  ]" << std::endl;
-        std::cout << "Is this correct? (1=true/0=false): ";
-        std::cin >> correctness;
-        if (correctness) {
+        if (userSize == 2){
+            std::cout << "[ " << " a " << " b " << " ]" << std::endl;
+            std::cout << "[ " << " c " << " d " << " ]" << std::endl;
+            std::cout << "Please enter the entries of your matrix in order (alphabetical), with entries separated by spaces: ";
+            std::cin >> a >> b >> c >> d;
+            std::cout << std::setprecision(2);
+            std::cout << std::setprecision(2) << "[  " << a << "  " << b << "  ]" << std::endl;
+            std::cout << "[  " << c << "  " << d << "  ]" << std::endl;
+            std::cout << "Is this correct? (1=true/0=false): ";
+            std::cin >> correctness;
+            if (correctness) {
                 std::cout << "you entered: true" << std::endl;
+                writeToFile(userName, userSize, a, b, c, d);
+            }
         }
-    }
-     
+    } while (userSize == 2); 
     // readData();
     return 0;
 }
@@ -159,7 +161,16 @@ void printLogo(){
     "******************************************************************" << std::endl;
 }
 
-//void addMatrix(){}
-    
-    
- 
+void writeToFile(std::string& name, int& size, double& a, double& b, double& c, double& d) {
+    std::ofstream outfile;
+    outfile.open("output.txt", std::fstream::app); // Append parameter makes it so we don't overwrite the file.
+    if (outfile.fail()) {
+        std::cout << "Failed to write to file. Exiting...\n";
+        exit(-1);    
+    }
+    outfile << "Matrix Name: " << name << "\nMatrix Size: " << size
+            << "\nMatrix: [" << a << " " << b << "]\n\t\t[" << c << " " << d
+            << "]\n" << std::endl;
+}
+
+//void addMatrix(){} 
