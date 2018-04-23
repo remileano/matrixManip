@@ -22,17 +22,17 @@
 class Matrix {
     public:
         Matrix();
-        Matrix(std::string name, int size, std::vector vect);
+        Matrix(std::string name, int size, std::vector< std::vector<double> > vect);
         // The size attribute is constant and cannot be changed.
         std::string getName() const;
         int getSize() const;
-        std::vector getVect() const;
-        void setName(string newName);
-        void setVect(std::vector newVect);
+        std::vector< std::vector<double> > getVect() const;
+        void setName(std::string newName);
+        void setVect(std::vector< std::vector<double> > newVect);
     private:
         std::string _name;
         int _size;
-        std::vector _vect;
+        std::vector< std::vector<double> > _vect;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,32 +42,32 @@ class Matrix {
 Matrix::Matrix(){
     _name = "unnamed";
     _size = 0;
-    _vect = std::vector<std::vector> myVect(_size);
+    _vect = empty(_size);
 }
 
-Matrix::Matrix(std::string name, int size, std::vector vect){
+Matrix::Matrix(std::string name, int size, std::vector< std::vector<double> > vect){
     _name = name;
     _size = size;
     _vect = vect;
 }
 
-std::string Matrix::getName {
+std::string Matrix::getName() const {
     return _name;
 }
 
-int getSize() const {
+int Matrix::getSize() const {
     return _size;
 }
 
-std::vector getVect() const {
+std::vector< std::vector<double> > Matrix::getVect() const {
     return _vect;
 }
 
-void setName(std::string newName) {
+void Matrix::setName(std::string newName) {
     _name = newName;
 }
 
-void setVect(std::vector newVect) {
+void Matrix::setVect(std::vector< std::vector<double> > newVect) {
     _vect = newVect;
 }
 
