@@ -14,6 +14,15 @@
 #include <fstream>   // for file I/O
 #include <cstdlib>   // for exit()
 #include <vector>
+#include <iomanip>
+
+////////////////////////////////////////////////////////////////////////////////
+//                                GLOBAL CONST                                //
+////////////////////////////////////////////////////////////////////////////////
+
+const std::vector<double> EMPTYCOL(0); // empty column vector
+
+const std::vector<std::vector<double>> EMPTYROW; // empty row vector
 
 ////////////////////////////////////////////////////////////////////////////////
 //                              CLASS DECLARATIONS                            //
@@ -28,7 +37,7 @@ class Matrix {
         int getSize() const;
         std::vector< std::vector<double> > getVect() const;
         void setName(std::string newName);
-        void setVect(std::vector< std::vector<double> > newVect);
+        void setVect(std::vector<std::vector<double>> newVect);
     private:
         std::string _name;
         int _size;
@@ -42,7 +51,7 @@ class Matrix {
 Matrix::Matrix(){
     _name = "unnamed";
     _size = 0;
-    _vect = empty(_size);
+    _vect = EMPTYROW;
 }
 
 Matrix::Matrix(std::string name, int size, std::vector< std::vector<double> > vect){
@@ -87,7 +96,32 @@ void printLogo();
 int main() {
     printLogo();
     
+    int userSize = 0;
+    std::string userName = "unnamed";
+    double a = 0.0;
+    double b = 0.0;
+    double c = 0.0;
+    double d = 0.0;
+    bool correctness = false;
+    std::cout << "Please enter the name for your matrix: ";
+    std::cin >> userName;
+    std::cout << "Please enter the size of your matrix: ";
+    std::cin >> userSize;
     
+    if (userSize == 2){
+        std::cout << "[ " << " a " << " b " << " ]" << std::endl;
+        std::cout << "[ " << " c " << " d " << " ]" << std::endl;
+        std::cout << "Please enter the entries of your matrix in order (alphabetical), with entries separated by spaces: ";
+        std::cin >> a >> b >> c >> d;
+        std::cout << std::setprecision(2);
+        std::cout << std::setprecision(2) << "[  " << a << "  " << b << "  ]" << std::endl;
+        std::cout << "[  " << c << "  " << d << "  ]" << std::endl;
+        std::cout << "Is this correct? (1=true/0=false): ";
+        std::cin >> correctness;
+        if (correctness) {
+                std::cout << "you entered: true" << std::endl;
+        }
+    }
      
     // readData();
     return 0;
@@ -121,7 +155,11 @@ void printLogo(){
     "| '_ ` _ \\ / _` | __| '__| \\ \\/ //    \\ / _` | '_ \\| | '_ \\ " << std::endl << 
     "| | | | | | (_| | |_| |  | |>  </ /\\/\\ \\ (_| | | | | | |_) |" << std::endl << 
     "|_| |_| |_|\\__,_|\\__|_|  |_/_/\\_\\/    \\/\\__,_|_| |_|_| .__/ " << std::endl << 
-    "                                                     |_|    2018" << std::endl;
+    "                                                     |_|    2018" << std::endl << 
+    "******************************************************************" << std::endl;
 }
+
+//void addMatrix(){}
+    
     
  
