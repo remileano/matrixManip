@@ -23,6 +23,8 @@ const std::vector<double> EMPTYCOL(0); // empty column vector
 
 const std::vector<std::vector<double>> EMPTYROW; // empty row vector
 
+const int MENUOPT = 2;
+
 ////////////////////////////////////////////////////////////////////////////////
 //                              CLASS DECLARATIONS                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -88,13 +90,70 @@ void Matrix::setVect(std::vector< std::vector<double> > newVect) {
 
 void printLogo();
 
-void writeToFile(std::string& name, int& size, double& a, double& b, double& c, double& d);
+void printToFile(std::string& name, int& size, double& a, double& b, double& c, double& d);
+
+void saveToFile(std::string& name, int& size, double& a, double& b, double& c, double& d);
+
+void loadFromFile(std::vector<Matrix>& whichDatabase);
+
+void addMatrix(std::vector<Matrix>& whichDatabase);
+
+int menu(int &aChoice);
+
+/*
+    Function menu1 - lists all of the matrices stored in vector thisDatabase.
+    
+    @param no parameters
+    @return none
+*/
+void menu1();
+
+/*
+    Function menu2 - adds three empty matrices to thisDatabase.
+    
+    @param no parameters
+    @return none
+*/
+void menu2();
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                  MAIN LOOP                                 //
 ////////////////////////////////////////////////////////////////////////////////
 
 int main() {
+    int menuChoice = 7;
+    const int SIZE = 3;
+    std::vector<Matrix> thisDatabase(SIZE);
+    
     printLogo();
+    
+    while (menuChoice != 0) {
+        menu(menuChoice);
+        if (menuChoice == 1) {
+            //List matrices
+            menu1();
+        } 
+/* 
+        else if (choice == 2) {
+            //Add a matrix
+            menu2(thisDatabase);
+        } else if (choice == 3) {
+            //Delete a matrix
+            menu3(thisDatabase);
+        } else if (choice == 4) {
+            //Edit a matrix
+            menu4(thisDatabase);
+        } else if (choice == 5) {
+            //NONE 
+            menu5(thisDatabase);
+        } else if (choice == 6) {
+            //NONE
+            menu6(thisDatabase);
+        }
+ */
+    }
+    
+    loadFromFile(thisDatabase);
     
     int userSize = 0;
     std::string userName = "unnamed";
@@ -121,7 +180,8 @@ int main() {
             std::cin >> correctness;
             if (correctness) {
                 std::cout << "you entered: true" << std::endl;
-                writeToFile(userName, userSize, a, b, c, d);
+                printToFile(userName, userSize, a, b, c, d);
+                saveToFile(userName, userSize, a, b, c, d);
             }
         }
     } while (userSize == 2); 
@@ -161,7 +221,7 @@ void printLogo(){
     "******************************************************************" << std::endl;
 }
 
-void writeToFile(std::string& name, int& size, double& a, double& b, double& c, double& d) {
+void printToFile(std::string& name, int& size, double& a, double& b, double& c, double& d) {
     std::ofstream outfile;
     outfile.open("output.txt", std::fstream::app); // Append parameter makes it so we don't overwrite the file.
     if (outfile.fail()) {
@@ -173,4 +233,89 @@ void writeToFile(std::string& name, int& size, double& a, double& b, double& c, 
             << "]\n" << std::endl;
 }
 
-//void addMatrix(){} 
+void saveToFile(std::string& name, int& size, double& a, double& b, double& c, double& d) {
+    std::ofstream outfile;
+    outfile.open("loaddata.txt", std::fstream::app); // Append parameter makes it so we don't overwrite the file.
+    if (outfile.fail()) {
+        std::cout << "Failed to write to file. Exiting...\n";
+        exit(-1);    
+    }
+    outfile << name << " " << size << " " << a << " " << b << " " << c << " " << d << std::endl;
+}
+
+
+void addMatrix(std::vector<Matrix>& whichDatabase){
+    std::cout << "Creating a new matrix:" << std::endl;
+    Matrix creation;
+    //creation.read();
+    whichDatabase.push_back(creation);
+}
+
+void loadFromFile(std::vector<Matrix>& whichDatabase){
+    std::ifstream fin;
+    fin.open("loaddata.txt");
+    
+    // whichDatabase is a vector of Matrix objects
+    // first, generate row vectors
+    // then, generate column vectors
+    
+    for(int i = 0; i < 3; i++){
+        addMatrix(whichDatabase);
+    }
+    
+    /* 
+std::string tempName = "none";
+    int tempSize = 6;
+    //std::vector<std::vector> tempVect;
+    int tempNum1 = 6;
+    int tempNum2 = 6;
+    
+    if (fin.fail()) {
+        std::cout << "Input file failed to open.\n";
+        exit(-1);
+    }
+    //while (fin >> nextStr)  {
+        fin >> tempName;
+    //} 
+    //double nextNum;
+    //while (fin >> nextNum)  {
+        //for (int i = 0; i < 3; ++i) {
+            fin >> tempSize;
+            fin >> tempNum1;
+            fin >> tempNum2;
+        //}
+    //} 
+    
+    std::cout << tempName << tempSize << tempNum1 << tempNum2;
+    fin.close();
+ */
+}
+
+/*
+    Function menu1 - lists all of the matrices stored in vector thisDatabase.
+    
+    @param no parameters
+    @return none
+*/
+int menu(int &aChoice) {
+    std::cout << "Please choose one of the following operations:" << std::endl;
+    std::cout << "0. Exit program \n1. List matrices \n2. Add three empty matrices \nChoice (0-" << MENUOPT << "2): ";
+    std::cin >> aChoice;
+    while (aChoice > 2){
+        std::cout << "*Value entered must be between 0 and " << MENUOPT << "!*" << std::endl;
+        std::cout << "Choice (0-" << MENUOPT << "): ";
+        std::cin >> aChoice;
+    }
+    
+    return aChoice;   
+}
+
+/*
+    Function menu2 - adds three empty matrices to thisDatabase.
+    
+    @param no parameters
+    @return none
+*/
+//void menu2();
+
+

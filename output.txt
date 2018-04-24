@@ -13,3 +13,12 @@ Matrix Size: 2
 Matrix: [2 3]
 		[1 4]
 
+Matrix Name: fdsa
+Matrix Size: 2
+Matrix: [0.4 1] [2 5]
+
+Matrix Name: lucy
+Matrix Size: 2
+Matrix: [1 4]
+		[7 9]
+
