@@ -106,7 +106,7 @@ int menu(int &aChoice);
     @param no parameters
     @return none
 */
-void menu1();
+//void menu1();
 
 /*
     Function menu2 - adds three empty matrices to thisDatabase.
@@ -131,7 +131,7 @@ int main() {
         menu(menuChoice);
         if (menuChoice == 1) {
             //List matrices
-            menu1();
+            //menu1();
         } 
 /* 
         else if (choice == 2) {
