@@ -19,9 +19,18 @@
 //                                GLOBAL CONST                                //
 ////////////////////////////////////////////////////////////////////////////////
 
-const std::vector<double> EMPTYCOL(0); // empty column vector
+const std::vector<double> EMPTYROW = {1.0, 2.0}; // empty row vector
 
-const std::vector<std::vector<double>> EMPTYROW; // empty row vector
+/* 
+
+we want:
+
+[1.0 2.0]
+[1.0 2.0]
+
+*/
+
+const std::vector<std::vector<double>> EMPTYCOL = {EMPTYROW, EMPTYROW}; // empty col vector
 
 const int MENUOPT = 2;
 
@@ -39,10 +48,13 @@ class Matrix {
         std::vector< std::vector<double> > getVect() const;
         void setName(std::string newName);
         void setVect(std::vector<std::vector<double>> newVect);
+        void printM() const;
+        void read();
     private:
         std::string _name;
         int _size;
         std::vector< std::vector<double> > _vect;
+        
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,14 +63,38 @@ class Matrix {
     
 Matrix::Matrix(){
     _name = "unnamed";
-    _size = 0;
-    _vect = EMPTYROW;
+    _size = 2;
+    _vect = EMPTYCOL;
 }
 
 Matrix::Matrix(std::string name, int size, std::vector< std::vector<double> > vect){
     _name = name;
     _size = size;
     _vect = vect;
+}
+
+void Matrix::read(){
+    double temp = 0.0;
+    std::cout << "Enter the name for the matrix: ";
+    std::cin >> std::ws;
+    std::getline(std::cin, _name);
+    std::cout << "Enter the size of the matrix: ";
+    std::cin >> _size;
+    std::vector<double> newrow;
+    for (int i = 1; i < _size + 1; i++){
+    std::cout << "Enter the #" << i << " row of the matrix, separated by spaces: ";
+        for (int i = 1; i < _size + 1; i++){
+            std::cin >> temp;
+            newrow.push_back(temp);
+        }
+        _vect.push_back(newrow);
+    }
+    
+}
+    
+
+void Matrix::printM() const{
+    std::cout << "[ " << _vect[0][0] << "  " << _vect[0][1] << " ]" << std::endl << "[ " << _vect[1][0] << "  " << _vect[1][1] << " ]" << std::endl;
 }
 
 std::string Matrix::getName() const {
@@ -100,6 +136,8 @@ void addMatrix(std::vector<Matrix>& whichDatabase);
 
 int menu(int &aChoice);
 
+void printAll(std::vector<Matrix>& whichDatabase);
+
 /*
     Function menu1 - lists all of the matrices stored in vector thisDatabase.
     
@@ -122,7 +160,7 @@ void menu2();
 
 int main() {
     int menuChoice = 7;
-    const int SIZE = 3;
+    const int SIZE = 1;
     std::vector<Matrix> thisDatabase(SIZE);
     
     printLogo();
@@ -131,61 +169,30 @@ int main() {
         menu(menuChoice);
         if (menuChoice == 1) {
             //List matrices
-            //menu1();
-        } 
-/* 
-        else if (choice == 2) {
+            printAll(thisDatabase);
+        } else if (menuChoice == 2) {
             //Add a matrix
-            menu2(thisDatabase);
-        } else if (choice == 3) {
+            addMatrix(thisDatabase);
+        } 
+    /* 
+        else if (menuChoice == 3) {
             //Delete a matrix
             menu3(thisDatabase);
-        } else if (choice == 4) {
+        } else if (menuChoice == 4) {
             //Edit a matrix
             menu4(thisDatabase);
-        } else if (choice == 5) {
+        } else if (menuChoice == 5) {
             //NONE 
             menu5(thisDatabase);
-        } else if (choice == 6) {
+        } else if (menuChoice == 6) {
             //NONE
             menu6(thisDatabase);
         }
  */
     }
     
-    loadFromFile(thisDatabase);
+    //loadFromFile(thisDatabase);
     
-    int userSize = 0;
-    std::string userName = "unnamed";
-    double a = 0.0;
-    double b = 0.0;
-    double c = 0.0;
-    double d = 0.0;
-    bool correctness = false;
-    do {
-        std::cout << "Please enter the name for your matrix: ";
-        std::cin >> userName;
-        std::cout << "Please enter the size of your matrix: ";
-        std::cin >> userSize;
-    
-        if (userSize == 2){
-            std::cout << "[ " << " a " << " b " << " ]" << std::endl;
-            std::cout << "[ " << " c " << " d " << " ]" << std::endl;
-            std::cout << "Please enter the entries of your matrix in order (alphabetical), with entries separated by spaces: ";
-            std::cin >> a >> b >> c >> d;
-            std::cout << std::setprecision(2);
-            std::cout << std::setprecision(2) << "[  " << a << "  " << b << "  ]" << std::endl;
-            std::cout << "[  " << c << "  " << d << "  ]" << std::endl;
-            std::cout << "Is this correct? (1=true/0=false): ";
-            std::cin >> correctness;
-            if (correctness) {
-                std::cout << "you entered: true" << std::endl;
-                printToFile(userName, userSize, a, b, c, d);
-                saveToFile(userName, userSize, a, b, c, d);
-            }
-        }
-    } while (userSize == 2); 
-    // readData();
     return 0;
 }
 
@@ -208,6 +215,39 @@ void readData(){
     fin.close();
 }
  */
+ 
+void read(){
+    int userSize = 0;
+        std::string userName = "unnamed";
+        double a = 0.0;
+        double b = 0.0;
+        double c = 0.0;
+        double d = 0.0;
+        bool correctness = false;
+        do {
+            std::cout << "Please enter the name for your matrix: ";
+            std::cin >> userName;
+            std::cout << "Please enter the size of your matrix: ";
+            std::cin >> userSize;
+    
+            if (userSize == 2){
+                std::cout << "[ " << " a " << " b " << " ]" << std::endl;
+                std::cout << "[ " << " c " << " d " << " ]" << std::endl;
+                std::cout << "Please enter the entries of your matrix in order (alphabetical), with entries separated by spaces: ";
+                std::cin >> a >> b >> c >> d;
+                std::cout << std::setprecision(2);
+                std::cout << std::setprecision(2) << "[  " << a << "  " << b << "  ]" << std::endl;
+                std::cout << "[  " << c << "  " << d << "  ]" << std::endl;
+                std::cout << "Is this correct? (1=true/0=false): ";
+                std::cin >> correctness;
+                if (correctness) {
+                    std::cout << "you entered: true" << std::endl;
+                    printToFile(userName, userSize, a, b, c, d);
+                    saveToFile(userName, userSize, a, b, c, d);
+                }
+            }
+        } while (userSize == 2); 
+}
  
  
 void printLogo(){
@@ -247,7 +287,7 @@ void saveToFile(std::string& name, int& size, double& a, double& b, double& c, d
 void addMatrix(std::vector<Matrix>& whichDatabase){
     std::cout << "Creating a new matrix:" << std::endl;
     Matrix creation;
-    //creation.read();
+    creation.read();
     whichDatabase.push_back(creation);
 }
 
@@ -264,7 +304,7 @@ void loadFromFile(std::vector<Matrix>& whichDatabase){
     }
     
     /* 
-std::string tempName = "none";
+    std::string tempName = "none";
     int tempSize = 6;
     //std::vector<std::vector> tempVect;
     int tempNum1 = 6;
@@ -291,15 +331,9 @@ std::string tempName = "none";
  */
 }
 
-/*
-    Function menu1 - lists all of the matrices stored in vector thisDatabase.
-    
-    @param no parameters
-    @return none
-*/
 int menu(int &aChoice) {
     std::cout << "Please choose one of the following operations:" << std::endl;
-    std::cout << "0. Exit program \n1. List matrices \n2. Add three empty matrices \nChoice (0-" << MENUOPT << "2): ";
+    std::cout << "0. Exit program \n1. List matrices \n2. Add an empty matrix \nChoice (0-" << MENUOPT << "): ";
     std::cin >> aChoice;
     while (aChoice > 2){
         std::cout << "*Value entered must be between 0 and " << MENUOPT << "!*" << std::endl;
@@ -310,12 +344,13 @@ int menu(int &aChoice) {
     return aChoice;   
 }
 
-/*
-    Function menu2 - adds three empty matrices to thisDatabase.
-    
-    @param no parameters
-    @return none
-*/
-//void menu2();
+void printAll(std::vector<Matrix>& whichDatabase){
+    for (int i = 0; i < (int) whichDatabase.size(); i++){
+        std::cout << whichDatabase[i].getName() <<
+        ", " << whichDatabase[i].getSize() << "x" << whichDatabase[i].getSize()    
+        << std::endl;
+        whichDatabase[i].printM();
+    }
+}
 
 
