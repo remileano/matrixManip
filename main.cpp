@@ -14,25 +14,7 @@
 #include <cstdlib>   // for exit()
 #include <vector>
 #include <iomanip>
-
-#include "Matrix.cpp"
-
-////////////////////////////////////////////////////////////////////////////////
-//                                GLOBAL CONST                                //
-////////////////////////////////////////////////////////////////////////////////
-
-const std::vector<double> EMPTYROW = {1.0, 2.0}; // empty row vector
-
-/* 
-
-we want:
-
-[1.0 2.0]
-[1.0 2.0]
-
-*/
-
-const std::vector<std::vector<double>> EMPTYCOL = {EMPTYROW, EMPTYROW}; // empty col vector
+#include "matrix.h"
 
 const int MENUOPT = 2;
 

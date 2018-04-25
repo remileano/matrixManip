@@ -1,6 +1,8 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <vector>
+
 ////////////////////////////////////////////////////////////////////////////////
 //                              CLASS DECLARATIONS                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -14,7 +16,7 @@ class Matrix {
         int getSize() const;
         std::vector< std::vector<double> > getVect() const;
         void setName(std::string newName);
-        void setVect(std::vector<std::vector<double>> newVect);
+        void setVect(std::vector< std::vector<double> > newVect);
         void printM() const;
         void read();
     private:

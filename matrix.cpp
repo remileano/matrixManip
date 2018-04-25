@@ -1,21 +1,41 @@
+#include <iostream>
+#include <vector>
+#include "matrix.h"
+
+////////////////////////////////////////////////////////////////////////////////
+//                                GLOBAL CONST                                //
+////////////////////////////////////////////////////////////////////////////////
+
+const std::vector<double> EMPTYROW = {1.0, 2.0}; // empty row vector
+
+/*
+
+we want:
+
+[1.0 2.0]
+[1.0 2.0]
+
+*/
+
+const std::vector< std::vector<double> > EMPTYCOL = {EMPTYROW, EMPTYROW}; // empty col vector
 
 ////////////////////////////////////////////////////////////////////////////////
 //                             MEMBER FUNCTION DEFINITIONS                    //
 ////////////////////////////////////////////////////////////////////////////////
     
-Matrix::Matrix(){
+Matrix::Matrix() {
     _name = "unnamed";
     _size = 2;
     _vect = EMPTYCOL;
 }
 
-Matrix::Matrix(std::string name, int size, std::vector< std::vector<double> > vect){
+Matrix::Matrix(std::string name, int size, std::vector< std::vector<double> > vect) {
     _name = name;
     _size = size;
     _vect = vect;
 }
 
-void Matrix::read(){
+void Matrix::read() {
     double temp = 0.0;
     std::cout << "Enter the name for the matrix: ";
     std::cin >> std::ws;
@@ -23,9 +43,9 @@ void Matrix::read(){
     std::cout << "Enter the size of the matrix: ";
     std::cin >> _size;
     std::vector<double> newrow;
-    for (int i = 1; i < _size + 1; i++){
+    for (int i = 1; i < _size + 1; i++) {
     std::cout << "Enter the #" << i << " row of the matrix, separated by spaces: ";
-        for (int i = 1; i < _size + 1; i++){
+        for (int i = 1; i < _size + 1; i++) {
             std::cin >> temp;
             newrow.push_back(temp);
         }
@@ -34,7 +54,7 @@ void Matrix::read(){
 }
     
 
-void Matrix::printM() const{
+void Matrix::printM() const {
     std::cout << "[ " << _vect[0][0] << "  " << _vect[0][1] << " ]" << std::endl << "[ " << _vect[1][0] << "  " << _vect[1][1] << " ]" << std::endl;
 }
 
