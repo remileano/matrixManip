@@ -1,2 +1,4 @@
 matrixmanip
 .DS_Store
+main.o
+matrix.o

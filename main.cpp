@@ -60,7 +60,7 @@ void menu2();
 
 int main() {
     int menuChoice = 7;
-    const int SIZE = 1;
+    const int SIZE = 0;
     std::vector<Matrix> thisDatabase(SIZE);
     
     printLogo();
