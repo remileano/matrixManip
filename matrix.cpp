@@ -18,7 +18,7 @@ we want:
 */
 
 const std::vector< std::vector<double> > EMPTYCOL = {EMPTYROW, EMPTYROW}; // empty col vector
-
+const std::vector< std::vector<double> > ACTUALLY_EMPTY; // actually empty
 ////////////////////////////////////////////////////////////////////////////////
 //                             MEMBER FUNCTION DEFINITIONS                    //
 ////////////////////////////////////////////////////////////////////////////////
@@ -26,7 +26,7 @@ const std::vector< std::vector<double> > EMPTYCOL = {EMPTYROW, EMPTYROW}; // emp
 Matrix::Matrix() {
     _name = "unnamed";
     _size = 2;
-    _vect = EMPTYCOL;
+    _vect = ACTUALLY_EMPTY;
 }
 
 Matrix::Matrix(std::string name, int size, std::vector< std::vector<double> > vect) {
