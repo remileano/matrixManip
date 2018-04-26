@@ -1,0 +1,33 @@
+void read(){
+    //***OBSOLETE***
+    int userSize = 0;
+        std::string userName = "unnamed";
+        double a = 0.0;
+        double b = 0.0;
+        double c = 0.0;
+        double d = 0.0;
+        bool correctness = false;
+        do {
+            std::cout << "Please enter the name for your matrix: ";
+            std::cin >> userName;
+            std::cout << "Please enter the size of your matrix: ";
+            std::cin >> userSize;
+    
+            if (userSize == 2){
+                std::cout << "[ " << " a " << " b " << " ]" << std::endl;
+                std::cout << "[ " << " c " << " d " << " ]" << std::endl;
+                std::cout << "Please enter the entries of your matrix in order (alphabetical), with entries separated by spaces: ";
+                std::cin >> a >> b >> c >> d;
+                std::cout << std::setprecision(2);
+                std::cout << std::setprecision(2) << "[  " << a << "  " << b << "  ]" << std::endl;
+                std::cout << "[  " << c << "  " << d << "  ]" << std::endl;
+                std::cout << "Is this correct? (1=true/0=false): ";
+                std::cin >> correctness;
+                if (correctness) {
+                    std::cout << "you entered: true" << std::endl;
+                    printToFile(userName, userSize, a, b, c, d);
+                    saveToFile(userName, userSize, a, b, c, d);
+                }
+            }
+        } while (userSize == 2); 
+}

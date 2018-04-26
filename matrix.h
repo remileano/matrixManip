@@ -18,7 +18,8 @@ class Matrix {
         void setName(std::string newName);
         void setVect(std::vector< std::vector<double> > newVect);
         void printM() const;
-        void read();
+        void read(std::vector<Matrix> whichDatabase);
+        void load(std::ifstream& fin);
     private:
         std::string _name;
         int _size;

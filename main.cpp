@@ -15,8 +15,9 @@
 #include <vector>
 #include <iomanip>
 #include "matrix.h"
+#include <climits>
 
-const int MENUOPT = 2;
+const int MENUOPT = 6;
 
 ////////////////////////////////////////////////////////////////////////////////
 //                          NON-MEMBER FUNCTION PROTOTYPES                    //
@@ -33,6 +34,8 @@ void saveToFile(std::string& name, int& size, double& a, double& b, double& c, d
 void loadFromFile(std::vector<Matrix>& whichDatabase);
 
 void addMatrix(std::vector<Matrix>& whichDatabase);
+
+void deleteMatrix(std::vector<Matrix>& whichDatabase);
 
 int menu(int &aChoice);
 
@@ -74,13 +77,14 @@ int main() {
             //Add a matrix
             addMatrix(thisDatabase);
         } 
-    /* 
         else if (menuChoice == 3) {
             //Delete a matrix
-            menu3(thisDatabase);
+            deleteMatrix(thisDatabase);
         } else if (menuChoice == 4) {
-            //Edit a matrix
-            menu4(thisDatabase);
+            //Load from a file
+            loadFromFile(thisDatabase);
+        }
+        /*
         } else if (menuChoice == 5) {
             //NONE 
             menu5(thisDatabase);
@@ -91,66 +95,15 @@ int main() {
  */
     }
     
-    //loadFromFile(thisDatabase);
-    
     return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //                         NON-MEMBER FUNCTION DEFINITIONS                    //
 ////////////////////////////////////////////////////////////////////////////////
-
-/* 
-void readData(){
-    ifstream fin;
-    fin.open("rawdata.txt");
-    if (fin.fail()) {
-        cout << "Input file failed to open.\n";
-        exit(-1);
-    }
-    double nextNum;
-    while (fin >> nextNum)  {
-        cout << "Read: " << nextNum << endl;
-    } 
-    fin.close();
-}
- */
- 
-void read(){
-    int userSize = 0;
-        std::string userName = "unnamed";
-        double a = 0.0;
-        double b = 0.0;
-        double c = 0.0;
-        double d = 0.0;
-        bool correctness = false;
-        do {
-            std::cout << "Please enter the name for your matrix: ";
-            std::cin >> userName;
-            std::cout << "Please enter the size of your matrix: ";
-            std::cin >> userSize;
-    
-            if (userSize == 2){
-                std::cout << "[ " << " a " << " b " << " ]" << std::endl;
-                std::cout << "[ " << " c " << " d " << " ]" << std::endl;
-                std::cout << "Please enter the entries of your matrix in order (alphabetical), with entries separated by spaces: ";
-                std::cin >> a >> b >> c >> d;
-                std::cout << std::setprecision(2);
-                std::cout << std::setprecision(2) << "[  " << a << "  " << b << "  ]" << std::endl;
-                std::cout << "[  " << c << "  " << d << "  ]" << std::endl;
-                std::cout << "Is this correct? (1=true/0=false): ";
-                std::cin >> correctness;
-                if (correctness) {
-                    std::cout << "you entered: true" << std::endl;
-                    printToFile(userName, userSize, a, b, c, d);
-                    saveToFile(userName, userSize, a, b, c, d);
-                }
-            }
-        } while (userSize == 2); 
-}
- 
  
 void printLogo(){
+    //***COMPLETE***//
     std::cout <<
     "                 _        _                         _"    << std::endl <<
     " _ __ ___   __ _| |_ _ __(_)_  __ /\\/\\   __ _ _ __ (_)_ __ " << std::endl <<
@@ -183,74 +136,94 @@ void saveToFile(std::string& name, int& size, double& a, double& b, double& c, d
     outfile << name << " " << size << " " << a << " " << b << " " << c << " " << d << std::endl;
 }
 
-
 void addMatrix(std::vector<Matrix>& whichDatabase){
-    std::cout << "Creating a new matrix:" << std::endl;
+    //***COMPLETE***//
+    std::cout << "Creating a new matrix." << std::endl << std::endl;
     Matrix creation;
-    creation.read();
+    creation.read(whichDatabase);
     whichDatabase.push_back(creation);
+    std::cout << "New matrix, \"" << creation.getName() << "\", created." << std::endl << std::endl;
+}
+
+void deleteMatrix(std::vector<Matrix>& whichDatabase){
+    std::string deleter = "";
+    int deletePos = INT_MAX;
+    std::cout << "Deleting an existing matrix." << std::endl << std::endl;
+    printAll(whichDatabase);
+    if (whichDatabase.size() < 1){
+        return;
+    }
+    std::cout << "Enter the name of the matrix to delete: ";
+    std::cin >> deleter;
+    for (int i = 0; i < (int) whichDatabase.size(); i++){
+        if (whichDatabase[i].getName() == deleter){
+            deletePos = i;
+        }
+    }
+    for (unsigned j = deletePos; j < whichDatabase.size() - 1; j++) {
+        whichDatabase[j] = whichDatabase[j+1];
+    }
+    whichDatabase.pop_back();
+    std::cout << std::endl;
 }
 
 void loadFromFile(std::vector<Matrix>& whichDatabase){
+    //***COMPLETE***//
+    std::string userFile = "";
+    std::cout << "Enter the name of the file to load from: ";
+    std::cin >> std::ws;
+    int loopcount = 0;
+    std::getline(std::cin, userFile);
     std::ifstream fin;
-    fin.open("loaddata.txt");
-    
-    // whichDatabase is a vector of Matrix objects
-    // first, generate row vectors
-    // then, generate column vectors
-    
-    for(int i = 0; i < 3; i++){
-        addMatrix(whichDatabase);
-    }
-    
-    /* 
-    std::string tempName = "none";
-    int tempSize = 6;
-    //std::vector<std::vector> tempVect;
-    int tempNum1 = 6;
-    int tempNum2 = 6;
-    
+    fin.open(userFile);
     if (fin.fail()) {
         std::cout << "Input file failed to open.\n";
-        exit(-1);
+        return;
+        //exit(-1);
     }
-    //while (fin >> nextStr)  {
-        fin >> tempName;
-    //} 
-    //double nextNum;
-    //while (fin >> nextNum)  {
-        //for (int i = 0; i < 3; ++i) {
-            fin >> tempSize;
-            fin >> tempNum1;
-            fin >> tempNum2;
-        //}
-    //} 
-    
-    std::cout << tempName << tempSize << tempNum1 << tempNum2;
+    while (fin.good()){
+        loopcount++;
+        Matrix temp;
+        temp.load(fin);
+        whichDatabase.push_back(temp);
+    }
+    std::cout << "Successfully added " << loopcount;
+    if (loopcount == 1){
+        std::cout << " matrix from ";
+    } else {
+        std::cout << " matrices from ";
+    }
+    std::cout << userFile << "." << std::endl;
     fin.close();
- */
+    std::cout << std::endl;
 }
 
 int menu(int &aChoice) {
+    //***COMPLETE***//
     std::cout << "Please choose one of the following operations:" << std::endl;
-    std::cout << "0. Exit program \n1. List matrices \n2. Add an empty matrix \nChoice (0-" << MENUOPT << "): ";
+    std::cout << "0. Exit program \n1. List matrices \n2. Add a new matrix \n3. Delete a matrix (UNDER CONSTRCTION) \n4. Load from file \n5. Save to file (UNDER CONSTRUCTION) \n6. Mathematics menu (UNDER CONSTRUCTION) \nChoice (0-" << MENUOPT << "): ";
     std::cin >> aChoice;
-    while (aChoice > 2){
+    while (aChoice > MENUOPT){
         std::cout << "*Value entered must be between 0 and " << MENUOPT << "!*" << std::endl;
         std::cout << "Choice (0-" << MENUOPT << "): ";
         std::cin >> aChoice;
     }
-    
     return aChoice;   
 }
 
 void printAll(std::vector<Matrix>& whichDatabase){
-    for (int i = 0; i < (int) whichDatabase.size(); i++){
-        std::cout << whichDatabase[i].getName() <<
-        ", " << whichDatabase[i].getSize() << "x" << whichDatabase[i].getSize()    
-        << std::endl;
-        whichDatabase[i].printM();
+    //***COMPLETE***//
+    if (whichDatabase.size() == 0){
+        std::cout << "No entries." << std::endl;
+    } else {
+        for (int i = 0; i < (int) whichDatabase.size(); i++){
+            std::cout << whichDatabase[i].getName() <<
+            ", " << whichDatabase[i].getSize() << "x" << whichDatabase[i].getSize()    
+            << std::endl;
+            whichDatabase[i].printM();
+        }
     }
+    std::cout << std::endl;
 }
 
 
