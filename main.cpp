@@ -146,6 +146,7 @@ void addMatrix(std::vector<Matrix>& whichDatabase){
 }
 
 void deleteMatrix(std::vector<Matrix>& whichDatabase){
+    bool found = false;
     std::string deleter = "";
     int deletePos = INT_MAX;
     std::cout << "Deleting an existing matrix." << std::endl << std::endl;
@@ -157,15 +158,20 @@ void deleteMatrix(std::vector<Matrix>& whichDatabase){
     std::cin >> deleter;
     for (int i = 0; i < (int) whichDatabase.size(); i++){
         if (whichDatabase[i].getName() == deleter){
-            std::cout << whichDatabase[i].getName();
-            std::cout << deleter;
+            found = true;
             deletePos = i;
             for (unsigned j = deletePos; j < whichDatabase.size() - 1; j++) {
                 whichDatabase[j] = whichDatabase[j+1];
             }
             whichDatabase.pop_back();
+            std::cout << "Matrix \"" << deleter << "\" was successfully deleted." << std::endl;
         }
     }
+    
+    if (!found){
+        std::cout << "\"" << deleter << "\" did not match the names of any matrices in the database. No matrices were deleted." << std::endl;
+    }
+    
     std::cout << std::endl;
 }
 
@@ -184,11 +190,13 @@ void loadFromFile(std::vector<Matrix>& whichDatabase){
         //exit(-1);
     }
     while (fin.good()){
-        loopcount++;
         Matrix temp;
-        temp.load(fin);
-        whichDatabase.push_back(temp);
+        if (!temp.load(fin, whichDatabase)){
+            loopcount++;
+            whichDatabase.push_back(temp);
+        }
     }
+    std::cout << std::endl;
     std::cout << "Successfully added " << loopcount;
     if (loopcount == 1){
         std::cout << " matrix from ";
@@ -215,11 +223,11 @@ int menu(int &aChoice) {
 
 void printAll(std::vector<Matrix>& whichDatabase){
     //***COMPLETE***//
-    std::cout << std::setprecision(3);
     if (whichDatabase.size() == 0){
         std::cout << "No entries." << std::endl;
     } else {
         for (int i = 0; i < (int) whichDatabase.size(); i++){
+            std::cout << std::endl;
             std::cout << whichDatabase[i].getName() <<
             ", " << whichDatabase[i].getSize() << "x" << whichDatabase[i].getSize()    
             << std::endl;

@@ -48,7 +48,6 @@ void Matrix::read(std::vector<Matrix> whichDatabase) {
                 if (tempName == whichDatabase[i].getName()){
                     std::cout << "A matrix already exists in your current database with that name. Please choose another." << std::endl;
                 } else {
-                    _name = tempName;
                     nameError = false;
                 }
             }
@@ -81,13 +80,21 @@ void Matrix::read(std::vector<Matrix> whichDatabase) {
     }
 }
 
-void Matrix::load(std::ifstream& fin){
+bool Matrix::load(std::ifstream& fin, std::vector<Matrix> whichDatabase){
     std::string tempName = "";
     double tempDouble = 0.0;
     std::vector<double> tempRow;
     std::vector< std::vector<double> > tempCol;
     std::getline(fin, tempName);
     _name = tempName;
+    bool nameError = false;
+        for (int i = 0; i < (int) whichDatabase.size(); i++){
+            if (tempName == whichDatabase[i].getName()){
+                std::cout << std::endl;
+                std::cout << "Could not load matrix \"" << tempName << "\". A matrix with that name already exists." << std::endl;
+                nameError = true;
+            }
+        }
     fin >> _size;
     //reading the vectors
     while (fin.good()){
@@ -106,12 +113,18 @@ void Matrix::load(std::ifstream& fin){
         _vect = tempCol;
     }
     fin.close();
+    return nameError;
 }
     
 
 void Matrix::printM() const {
-// we need to make it print out a consistent size so that it looks nice
-    std::cout << "[ " << std::fixed << std::setprecision(5) << _vect[0][0] << "  " << _vect[0][1] << " ]" << std::endl << "[ " << _vect[1][0] << "  " << _vect[1][1] << " ]" << std::endl;
+    std::cout << std::setprecision(5) <<
+    
+    "[ " << std::left << std::setw(12) << _vect[0][0] <<    
+    std::setw(4) << " " << std::setw(12) << _vect[0][1] << "]\n" << 
+    
+    "[ " << std::left << std::setw(12) << _vect[1][0] << 
+    std::setw(4) << " " << std::setw(12) << _vect[1][1] << "]\n";
 }
 
 std::string Matrix::getName() const {

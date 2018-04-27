@@ -19,7 +19,7 @@ class Matrix {
         void setVect(std::vector< std::vector<double> > newVect);
         void printM() const;
         void read(std::vector<Matrix> whichDatabase);
-        void load(std::ifstream& fin);
+        bool load(std::ifstream& fin, std::vector<Matrix> whichDatabase);
     private:
         std::string _name;
         int _size;
