@@ -157,13 +157,15 @@ void deleteMatrix(std::vector<Matrix>& whichDatabase){
     std::cin >> deleter;
     for (int i = 0; i < (int) whichDatabase.size(); i++){
         if (whichDatabase[i].getName() == deleter){
+            std::cout << whichDatabase[i].getName();
+            std::cout << deleter;
             deletePos = i;
+            for (unsigned j = deletePos; j < whichDatabase.size() - 1; j++) {
+                whichDatabase[j] = whichDatabase[j+1];
+            }
+            whichDatabase.pop_back();
         }
     }
-    for (unsigned j = deletePos; j < whichDatabase.size() - 1; j++) {
-        whichDatabase[j] = whichDatabase[j+1];
-    }
-    whichDatabase.pop_back();
     std::cout << std::endl;
 }
 
@@ -201,7 +203,7 @@ void loadFromFile(std::vector<Matrix>& whichDatabase){
 int menu(int &aChoice) {
     //***COMPLETE***//
     std::cout << "Please choose one of the following operations:" << std::endl;
-    std::cout << "0. Exit program \n1. List matrices \n2. Add a new matrix \n3. Delete a matrix (UNDER CONSTRCTION) \n4. Load from file \n5. Save to file (UNDER CONSTRUCTION) \n6. Mathematics menu (UNDER CONSTRUCTION) \nChoice (0-" << MENUOPT << "): ";
+    std::cout << "0. Exit program \n1. List matrices \n2. Add a new matrix \n3. Delete a matrix \n4. Load from file \n5. Save to file (UNDER CONSTRUCTION) \n6. Mathematics menu (UNDER CONSTRUCTION) \nChoice (0-" << MENUOPT << "): ";
     std::cin >> aChoice;
     while (aChoice > MENUOPT){
         std::cout << "*Value entered must be between 0 and " << MENUOPT << "!*" << std::endl;
@@ -213,6 +215,7 @@ int menu(int &aChoice) {
 
 void printAll(std::vector<Matrix>& whichDatabase){
     //***COMPLETE***//
+    std::cout << std::setprecision(3);
     if (whichDatabase.size() == 0){
         std::cout << "No entries." << std::endl;
     } else {

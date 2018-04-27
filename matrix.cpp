@@ -110,7 +110,8 @@ void Matrix::load(std::ifstream& fin){
     
 
 void Matrix::printM() const {
-    std::cout << "[ " << _vect[0][0] << "  " << _vect[0][1] << " ]" << std::endl << "[ " << _vect[1][0] << "  " << _vect[1][1] << " ]" << std::endl;
+// we need to make it print out a consistent size so that it looks nice
+    std::cout << "[ " << std::fixed << std::setprecision(5) << _vect[0][0] << "  " << _vect[0][1] << " ]" << std::endl << "[ " << _vect[1][0] << "  " << _vect[1][1] << " ]" << std::endl;
 }
 
 std::string Matrix::getName() const {
