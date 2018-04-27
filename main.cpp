@@ -29,7 +29,7 @@ void printLogo();
 
 void printToFile(std::string& name, int& size, double& a, double& b, double& c, double& d);
 
-void saveToFile(std::string& name, int& size, double& a, double& b, double& c, double& d);
+void saveToFile(std::vector<Matrix>& whichDatabase);
 
 void loadFromFile(std::vector<Matrix>& whichDatabase);
 
@@ -65,9 +65,7 @@ int main() {
     int menuChoice = 7;
     const int SIZE = 0;
     std::vector<Matrix> thisDatabase(SIZE);
-    
     printLogo();
-    
     while (menuChoice != 0) {
         menu(menuChoice);
         if (menuChoice == 1) {
@@ -76,23 +74,19 @@ int main() {
         } else if (menuChoice == 2) {
             //Add a matrix
             addMatrix(thisDatabase);
-        } 
-        else if (menuChoice == 3) {
+        } else if (menuChoice == 3) {
             //Delete a matrix
             deleteMatrix(thisDatabase);
         } else if (menuChoice == 4) {
             //Load from a file
             loadFromFile(thisDatabase);
-        }
-        /*
         } else if (menuChoice == 5) {
-            //NONE 
-            menu5(thisDatabase);
+            //Save to a file
+            saveToFile(thisDatabase);
         } else if (menuChoice == 6) {
-            //NONE
-            menu6(thisDatabase);
+            //Open MATH menu
+            std::cout << "Menu doesn't exist yet." << std::endl;
         }
- */
     }
     
     return 0;
@@ -114,6 +108,7 @@ void printLogo(){
     "******************************************************************" << std::endl;
 }
 
+/* 
 void printToFile(std::string& name, int& size, double& a, double& b, double& c, double& d) {
     std::ofstream outfile;
     outfile.open("output.txt", std::fstream::app); // Append parameter makes it so we don't overwrite the file.
@@ -126,15 +121,7 @@ void printToFile(std::string& name, int& size, double& a, double& b, double& c, 
             << "]\n" << std::endl;
 }
 
-void saveToFile(std::string& name, int& size, double& a, double& b, double& c, double& d) {
-    std::ofstream outfile;
-    outfile.open("loaddata.txt", std::fstream::app); // Append parameter makes it so we don't overwrite the file.
-    if (outfile.fail()) {
-        std::cout << "Failed to write to file. Exiting...\n";
-        exit(-1);    
-    }
-    outfile << name << " " << size << " " << a << " " << b << " " << c << " " << d << std::endl;
-}
+*/
 
 void addMatrix(std::vector<Matrix>& whichDatabase){
     //***COMPLETE***//
@@ -172,6 +159,35 @@ void deleteMatrix(std::vector<Matrix>& whichDatabase){
         std::cout << "\"" << deleter << "\" did not match the names of any matrices in the database. No matrices were deleted." << std::endl;
     }
     
+    std::cout << std::endl;
+}
+
+void saveToFile(std::vector<Matrix>& whichDatabase){
+    std::string userFile = "";
+    std::cout << "Enter the name of the file to save to: ";
+    std::cin >> std::ws;
+    int loopcount = 0;
+    std::getline(std::cin, userFile);
+    std::ofstream fout;
+    fout.open(userFile, std::fstream::app); // Append parameter makes it so we don't overwrite the file.
+    if (fout.fail()) {
+        std::cout << "Failed to write to file. Exiting...\n";
+        return;
+    }
+    while (fout.good()){
+        for (int i = 0; i < (int) whichDatabase.size(); i++){
+            fout << whichDatabase[i].getName() << std::endl << whichDatabase[i].getSize();
+        }
+    }
+    std::cout << std::endl;
+    std::cout << "Successfully saved " << loopcount;
+    if (loopcount == 1){
+        std::cout << " matrix to ";
+    } else {
+        std::cout << " matrices to ";
+    }
+    std::cout << userFile << "." << std::endl;
+    fout.close();
     std::cout << std::endl;
 }
 
