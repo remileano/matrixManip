@@ -48,6 +48,7 @@ void Matrix::read(std::vector<Matrix> whichDatabase) {
                 if (tempName == whichDatabase[i].getName()){
                     std::cout << "A matrix already exists in your current database with that name. Please choose another." << std::endl;
                 } else {
+                    _name = tempName;
                     nameError = false;
                 }
             }
@@ -59,8 +60,6 @@ void Matrix::read(std::vector<Matrix> whichDatabase) {
         std::cin >> _size;
         if (_size == 0){
             std::cout << "Matrix dimension cannot be zero." << std::endl;
-        } else if (_size > 2){
-            std::cout << "The current program cannot handle matrices greater than 2." << std::endl;
         } else {
             sizeError = false;
         }
@@ -85,9 +84,18 @@ bool Matrix::load(std::ifstream& fin, std::vector<Matrix> whichDatabase){
     double tempDouble = 0.0;
     std::vector<double> tempRow;
     std::vector< std::vector<double> > tempCol;
-    std::getline(fin, tempName);
-    _name = tempName;
     bool nameError = false;
+    
+    if (fin.fail()){
+        std::cout << "fin error!" << std::endl;
+        return false;
+    }
+    
+    std::getline(fin, tempName);
+    while (tempName == "" || tempName == " "){
+        std::getline(fin, tempName);
+    }
+    _name = tempName;
         for (int i = 0; i < (int) whichDatabase.size(); i++){
             if (tempName == whichDatabase[i].getName()){
                 std::cout << std::endl;
@@ -96,8 +104,8 @@ bool Matrix::load(std::ifstream& fin, std::vector<Matrix> whichDatabase){
             }
         }
     fin >> _size;
-    //reading the vectors
     while (fin.good()){
+    //reading the vectors
         for (int j = 0; j < (int) _size; j++){
             for (int i = 0; i < (int) _size; i++){
                 fin >> tempDouble;
@@ -110,21 +118,10 @@ bool Matrix::load(std::ifstream& fin, std::vector<Matrix> whichDatabase){
                 tempRow.pop_back();
             }
         }  
-        _vect = tempCol;
     }
+        _vect = tempCol;
     fin.close();
     return nameError;
-}
-    
-
-void Matrix::printM() const {
-    std::cout << std::setprecision(5) <<
-    
-    "[ " << std::left << std::setw(12) << _vect[0][0] <<    
-    std::setw(4) << " " << std::setw(12) << _vect[0][1] << "]\n" << 
-    
-    "[ " << std::left << std::setw(12) << _vect[1][0] << 
-    std::setw(4) << " " << std::setw(12) << _vect[1][1] << "]\n";
 }
 
 std::string Matrix::getName() const {
@@ -133,6 +130,19 @@ std::string Matrix::getName() const {
 
 int Matrix::getSize() const {
     return _size;
+}
+
+void Matrix::printM() const {
+    //print a column
+    for (int j = 0; j < _size; j++){
+        std::cout << "[ ";
+        //print a row
+        for (int i = 0; i < _size; i++){
+            std::cout << std::scientific << std::setprecision(5);
+            std::cout << std::left << std::setw(12) << _vect[j][i] << std::setw(4) << " ";
+        }
+        std::cout << "]\n";
+    }
 }
 
 std::vector< std::vector<double> > Matrix::getVect() const {

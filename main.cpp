@@ -86,6 +86,9 @@ int main() {
         } else if (menuChoice == 6) {
             //Open MATH menu
             std::cout << "Menu doesn't exist yet." << std::endl;
+        } else if (menuChoice == 7) {
+            //Clear matrices from active list
+            std::cout << "Menu doesn't exist yet." << std::endl;
         }
     }
     
@@ -107,21 +110,6 @@ void printLogo(){
     "                                                     |_|    2018" << std::endl << 
     "******************************************************************" << std::endl;
 }
-
-/* 
-void printToFile(std::string& name, int& size, double& a, double& b, double& c, double& d) {
-    std::ofstream outfile;
-    outfile.open("output.txt", std::fstream::app); // Append parameter makes it so we don't overwrite the file.
-    if (outfile.fail()) {
-        std::cout << "Failed to write to file. Exiting...\n";
-        exit(-1);    
-    }
-    outfile << "Matrix Name: " << name << "\nMatrix Size: " << size
-            << "\nMatrix: [" << a << " " << b << "]\n\t\t[" << c << " " << d
-            << "]\n" << std::endl;
-}
-
-*/
 
 void addMatrix(std::vector<Matrix>& whichDatabase){
     //***COMPLETE***//
@@ -162,44 +150,14 @@ void deleteMatrix(std::vector<Matrix>& whichDatabase){
     std::cout << std::endl;
 }
 
-void saveToFile(std::vector<Matrix>& whichDatabase){
-    std::string userFile = "";
-    std::cout << "Enter the name of the file to save to: ";
-    std::cin >> std::ws;
-    int loopcount = 0;
-    std::getline(std::cin, userFile);
-    std::ofstream fout;
-    fout.open(userFile, std::fstream::app); // Append parameter makes it so we don't overwrite the file.
-    if (fout.fail()) {
-        std::cout << "Failed to write to file. Exiting...\n";
-        return;
-    }
-    while (fout.good()){
-        for (int i = 0; i < (int) whichDatabase.size(); i++){
-            fout << whichDatabase[i].getName() << std::endl << whichDatabase[i].getSize();
-        }
-    }
-    std::cout << std::endl;
-    std::cout << "Successfully saved " << loopcount;
-    if (loopcount == 1){
-        std::cout << " matrix to ";
-    } else {
-        std::cout << " matrices to ";
-    }
-    std::cout << userFile << "." << std::endl;
-    fout.close();
-    std::cout << std::endl;
-}
-
 void loadFromFile(std::vector<Matrix>& whichDatabase){
-    //***COMPLETE***//
     std::string userFile = "";
     std::cout << "Enter the name of the file to load from: ";
     std::cin >> std::ws;
     int loopcount = 0;
     std::getline(std::cin, userFile);
     std::ifstream fin;
-    fin.open(userFile);
+    fin.open(userFile.c_str());
     if (fin.fail()) {
         std::cout << "Input file failed to open.\n";
         return;
@@ -224,10 +182,51 @@ void loadFromFile(std::vector<Matrix>& whichDatabase){
     std::cout << std::endl;
 }
 
+void saveToFile(std::vector<Matrix>& whichDatabase){
+    std::string userFileSave = "mysavefile2.txt";
+    std::cout << "Enter the name of the file to save to: ";
+    int loopcount = 0;
+    //std::getline(std::cin, userFileSave);
+    std::cin >> userFileSave;
+    std::ofstream fout;
+    fout.open(userFileSave.c_str(), std::fstream::app); // Append parameter makes it so we don't overwrite the file.
+    if (fout.fail()) {
+        std::cout << "Failed to write to file " << userFileSave << ". Exiting...\n";
+        return;
+    }
+    for (int k = 0; k < (int) whichDatabase.size(); k++){
+        fout << whichDatabase[k].getName() << std::endl << whichDatabase[k].getSize() << std::endl;
+        //print a column
+        for (int j = 0; j < whichDatabase[k].getSize(); j++){
+            //print a row
+            for (int i = 0; i < whichDatabase[k].getSize(); i++){
+                fout << std::fixed << whichDatabase[k].getVect()[j][i]; 
+                if (i == whichDatabase[k].getSize()-1){
+                   fout << std::endl;
+                } else {
+                    fout << " ";
+                }
+            }
+        }
+        loopcount++;
+        fout << std::endl;
+    }
+    fout.close();
+    std::cout << std::endl;
+    std::cout << "Successfully saved " << loopcount;
+    if (loopcount == 1){
+        std::cout << " matrix to ";
+    } else {
+        std::cout << " matrices to ";
+    }
+    std::cout << userFileSave << "." << std::endl;
+    std::cout << std::endl;
+}
+
 int menu(int &aChoice) {
     //***COMPLETE***//
     std::cout << "Please choose one of the following operations:" << std::endl;
-    std::cout << "0. Exit program \n1. List matrices \n2. Add a new matrix \n3. Delete a matrix \n4. Load from file \n5. Save to file (UNDER CONSTRUCTION) \n6. Mathematics menu (UNDER CONSTRUCTION) \nChoice (0-" << MENUOPT << "): ";
+    std::cout << "0. Exit program \n1. List matrices \n2. Add a new matrix \n3. Delete a matrix \n4. Load from file \n5. Save to file \n6. Mathematics menu (UNDER CONSTRUCTION) \n7. Clear all (UNDER CONSTRUCTION) \nChoice (0-" << MENUOPT << "): ";
     std::cin >> aChoice;
     while (aChoice > MENUOPT){
         std::cout << "*Value entered must be between 0 and " << MENUOPT << "!*" << std::endl;
