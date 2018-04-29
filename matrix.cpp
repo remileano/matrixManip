@@ -30,6 +30,12 @@ Matrix::Matrix(std::string name, int size, std::vector< std::vector<double> > ve
     _vect = vect;
 }
 
+Matrix::Matrix(std::string name, int size){
+    _name = name;
+    _size = size;
+    _vect = ACTUALLY_EMPTY;
+}
+
 void Matrix::read(std::vector<Matrix> whichDatabase) {
     bool sizeError = true;
     bool nameError = true;
@@ -79,37 +85,14 @@ void Matrix::read(std::vector<Matrix> whichDatabase) {
     }
 }
 
-bool Matrix::load(std::ifstream& fin, std::vector<Matrix> whichDatabase){
-    std::string tempName = "";
+void Matrix::load(std::ifstream& fin){
     double tempDouble = 0.0;
     std::vector<double> tempRow;
     std::vector< std::vector<double> > tempCol;
-    bool nameError = false;
-    
-    if (fin.fail()){
-        std::cout << "fin error!" << std::endl;
-        return false;
-    }
-    
-    std::getline(fin, tempName);
-    while (tempName == "" || tempName == " "){
-        std::getline(fin, tempName);
-    }
-    _name = tempName;
-        for (int i = 0; i < (int) whichDatabase.size(); i++){
-            if (tempName == whichDatabase[i].getName()){
-                std::cout << std::endl;
-                std::cout << "Could not load matrix \"" << tempName << "\". A matrix with that name already exists." << std::endl;
-                nameError = true;
-            }
-        }
-    fin >> _size;
-    while (fin.good()){
     //reading the vectors
         for (int j = 0; j < (int) _size; j++){
             for (int i = 0; i < (int) _size; i++){
                 fin >> tempDouble;
-                //std::cout << tempDouble;
                 tempRow.push_back(tempDouble);
             }
             tempCol.push_back(tempRow);
@@ -118,10 +101,7 @@ bool Matrix::load(std::ifstream& fin, std::vector<Matrix> whichDatabase){
                 tempRow.pop_back();
             }
         }  
-    }
-        _vect = tempCol;
-    fin.close();
-    return nameError;
+    _vect = tempCol;
 }
 
 std::string Matrix::getName() const {

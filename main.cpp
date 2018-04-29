@@ -151,25 +151,45 @@ void deleteMatrix(std::vector<Matrix>& whichDatabase){
 }
 
 void loadFromFile(std::vector<Matrix>& whichDatabase){
-    std::string userFile = "";
-    std::cout << "Enter the name of the file to load from: ";
-    std::cin >> std::ws;
+    std::string tempName = "empty";
+    std::string userFile = "mysavefile.txt";
+    bool nameError = false;
     int loopcount = 0;
-    std::getline(std::cin, userFile);
+    int tempSize = 0;
+    std::cout << "Enter the name of the file to load from: ";
+    std::cin >> userFile;
     std::ifstream fin;
-    fin.open(userFile.c_str());
+    fin.open(userFile.c_str()); 
     if (fin.fail()) {
         std::cout << "Input file failed to open.\n";
         return;
-        //exit(-1);
     }
     while (fin.good()){
-        Matrix temp;
-        if (!temp.load(fin, whichDatabase)){
+        fin >> tempName;
+        
+        /* 
+for (int i = 0; i < (int) whichDatabase.size(); i++){
+            if (tempName == whichDatabase[i].getName()){
+                std::cout << std::endl;
+                std::cout << "Could not load matrix \"" << tempName << "\". A matrix with that name already exists." << std::endl;
+                nameError = true;
+                fin >> tempSize;
+                Matrix temp(tempName, tempSize);
+                temp.load(fin);
+            }
+        }
+ */
+        
+        fin >> tempSize;
+        if (tempName.length() > 0 && nameError == false){
+            Matrix temp(tempName, tempSize);
+            temp.load(fin);
             loopcount++;
             whichDatabase.push_back(temp);
         }
+        //nameError = false;
     }
+    
     std::cout << std::endl;
     std::cout << "Successfully added " << loopcount;
     if (loopcount == 1){
