@@ -165,10 +165,10 @@ void loadFromFile(std::vector<Matrix>& whichDatabase){
         return;
     }
     while (fin.good()){
-        fin >> tempName;
-        
-        /* 
-for (int i = 0; i < (int) whichDatabase.size(); i++){
+        tempName = "";
+        tempSize = 0;
+        fin >> tempName; 
+        for (int i = 0; i < (int) whichDatabase.size(); i++){
             if (tempName == whichDatabase[i].getName()){
                 std::cout << std::endl;
                 std::cout << "Could not load matrix \"" << tempName << "\". A matrix with that name already exists." << std::endl;
@@ -178,16 +178,14 @@ for (int i = 0; i < (int) whichDatabase.size(); i++){
                 temp.load(fin);
             }
         }
- */
-        
         fin >> tempSize;
-        if (tempName.length() > 0 && nameError == false){
+        if (tempName.length() > 0 && tempSize > 0 && nameError == false){
             Matrix temp(tempName, tempSize);
             temp.load(fin);
             loopcount++;
             whichDatabase.push_back(temp);
         }
-        //nameError = false;
+        nameError = false;
     }
     
     std::cout << std::endl;
