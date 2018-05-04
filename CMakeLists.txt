@@ -7,7 +7,6 @@ include_directories(.)
 
 add_executable(matrixmanip
         main.cpp
-        Makefile
         matrix.cpp
         matrix.h
         mysavefile.txt
