@@ -3,3 +3,4 @@ matrixmanip
 main.o
 matrix.o
 cmake-build-debug
+.idea
