@@ -12,10 +12,11 @@
 #include <iostream>
 #include <fstream>   // for file I/O
 #include <cstdlib>   // for exit()
+#include <climits>
+#include <string>
 #include <vector>
 #include <iomanip>
 #include "matrix.h"
-#include <climits>
 
 const int MENUOPT = 6;
 
