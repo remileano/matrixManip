@@ -74,6 +74,14 @@ int main() {
     sf::RectangleShape menu1(sf::Vector2f(200, 50));
     menu1.setFillColor(sf::Color(95,75,139));
     menu1.setPosition(sf::Vector2f(260, 120));
+    sf::Font font;
+    font.loadFromFile("Moon2.0-Bold.otf");
+    sf::Text text;
+    text.setFont(font);
+    text.setString("Hello world");
+    text.setCharacterSize(50);
+    text.setFillColor(sf::Color::White);
+
 
     int menuChoice = INT_MAX;
     const int SIZE = 0;
@@ -93,10 +101,11 @@ int main() {
 
         win.clear(sf::Color(188,184,201));
         win.draw(menu1);
+        win.draw(text);
         win.display();
     }
 
-    while (menuChoice != 0) {
+/*    while (menuChoice != 0) {
         menu(menuChoice);
         if (menuChoice == 1) {
             //List matrices
@@ -126,7 +135,7 @@ int main() {
             //Print out Pascal's triangle
             pascalsTriangle();
         }
-    }
+    }*/
     
     return 0;
 }
