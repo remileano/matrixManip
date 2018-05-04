@@ -16,8 +16,10 @@
 #include <iomanip>
 #include "matrix.h"
 #include <climits>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window/Mouse.hpp>
 
-const int MENUOPT = 6;
+const int MENUOPT = 9;
 
 ////////////////////////////////////////////////////////////////////////////////
 //                          NON-MEMBER FUNCTION PROTOTYPES                    //
@@ -55,17 +57,44 @@ void printAll(std::vector<Matrix>& whichDatabase);
     @param no parameters
     @return none
 */
-void menu2();
+void drawShape();
+
+void pascalsTriangle();
+
+int fibonacci(int n);
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                  MAIN LOOP                                 //
 ////////////////////////////////////////////////////////////////////////////////
 
 int main() {
-    int menuChoice = 7;
+    sf::RenderWindow win(sf::VideoMode(1800, 1200), "matrixManip");
+
+    sf::RectangleShape menu1(sf::Vector2f(200, 50));
+    menu1.setFillColor(sf::Color(95,75,139));
+    menu1.setPosition(sf::Vector2f(260, 120));
+
+    int menuChoice = INT_MAX;
     const int SIZE = 0;
     std::vector<Matrix> thisDatabase(SIZE);
     printLogo();
+
+    while (win.isOpen())
+    {
+        sf::Event event;
+        while (win.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            {
+                win.close();
+            }
+        }
+
+        win.clear(sf::Color(188,184,201));
+        win.draw(menu1);
+        win.display();
+    }
+
     while (menuChoice != 0) {
         menu(menuChoice);
         if (menuChoice == 1) {
@@ -89,6 +118,12 @@ int main() {
         } else if (menuChoice == 7) {
             //Clear matrices from active list
             std::cout << "Menu doesn't exist yet." << std::endl;
+        } else if (menuChoice == 8) {
+            //Print out a triangle
+            drawShape();
+        } else if (menuChoice == 9) {
+            //Print out Pascal's triangle
+            pascalsTriangle();
         }
     }
     
@@ -108,7 +143,8 @@ void printLogo(){
     "| | | | | | (_| | |_| |  | |>  </ /\\/\\ \\ (_| | | | | | |_) |" << std::endl << 
     "|_| |_| |_|\\__,_|\\__|_|  |_/_/\\_\\/    \\/\\__,_|_| |_|_| .__/ " << std::endl << 
     "                                                     |_|    2018" << std::endl << 
-    "******************************************************************" << std::endl;
+    "------------------------------------------------------------------" << std::endl;
+    //"******************************************************************" << std::endl;
 }
 
 void addMatrix(std::vector<Matrix>& whichDatabase){
@@ -178,8 +214,8 @@ void loadFromFile(std::vector<Matrix>& whichDatabase){
                 temp.load(fin);
             }
         }
-        fin >> tempSize;
-        if (tempName.length() > 0 && tempSize > 0 && nameError == false){
+        if (tempName.length() > 0 && nameError == false){
+            fin >> tempSize;
             Matrix temp(tempName, tempSize);
             temp.load(fin);
             loopcount++;
@@ -244,7 +280,15 @@ void saveToFile(std::vector<Matrix>& whichDatabase){
 int menu(int &aChoice) {
     //***COMPLETE***//
     std::cout << "Please choose one of the following operations:" << std::endl;
-    std::cout << "0. Exit program \n1. List matrices \n2. Add a new matrix \n3. Delete a matrix \n4. Load from file \n5. Save to file \n6. Mathematics menu (UNDER CONSTRUCTION) \n7. Clear all (UNDER CONSTRUCTION) \nChoice (0-" << MENUOPT << "): ";
+    std::cout << 
+    std::setw(20) << std::left << "0. Exit program" << std::setw(5) << " " << "6. Mathematics menu (UNDER CONSTRUCTION) \n" <<
+    std::setw(20) << std::left << "1. List matrices" << std::setw(5) << " " << "7. Clear all (UNDER CONSTRUCTION) \n" <<
+    std::setw(20) << std::left << "2. Add a new matrix" << std::setw(5) << " " << "8. Draw a shape (UNDER CONSTRUCTION) \n" <<
+    std::setw(20) << "3. Delete a matrix" << std::setw(5) << " " << "9. Pascal's Triangle (UNDER CONSTRUCTION) \n"<<
+    std::setw(20) << "4. Load from file" << std::endl <<
+    std::setw(20) << "5. Save to file \n" <<
+    "------------------------------------------------------------------" << std::endl <<
+    "Choice (0-" << MENUOPT << "): ";
     std::cin >> aChoice;
     while (aChoice > MENUOPT){
         std::cout << "*Value entered must be between 0 and " << MENUOPT << "!*" << std::endl;
@@ -268,6 +312,64 @@ void printAll(std::vector<Matrix>& whichDatabase){
         }
     }
     std::cout << std::endl;
+}
+
+void drawShape(){
+    int length = 0;
+    std::cout << "Please enter a non-zero integer value: ";
+    std::cin >> length;
+    int distance = 0;
+    int variable = length;
+    
+    for (int i = 0; i <= length; i++){
+        distance = i;
+        variable = length - i;
+        for (int k = 0; k < distance; k++){
+            std::cout << std::setw(2) << " ";
+        }
+        for (int l = 0; l < length - i; l++){
+            std::cout << std::setw(4) << variable;
+        }
+        std::cout << std::endl;
+    }
+}
+
+int fibonacci(int n){
+    if(n <= 0){
+        return 0;
+    } else if (n == 1 || n == 2){
+        return 1;
+    } else {
+        return (fibonacci(n-1)+fibonacci(n-2));
+    }
+}
+
+void pascalsTriangle(){
+    int distance = 0;
+    int variable = 0;
+    int input = 0;
+    int rowcount = 0;
+    std::cout << "Please enter a positive, nonzero integer: ";
+    std::cin >> input;
+    for (int x = input; x > 1; x--){
+       // for (int i = 0; i <= input; i++){
+            distance = x;
+            variable = input - x;
+            for (int k = 0; k < distance; k++){
+                std::cout << std::setw(2) << " ";
+            }
+            for (int l = 0; l < input - x; l++){
+                if (rowcount == 0){
+                    std::cout << std::setw(4) << 1;
+                } else {
+                    std::cout << std::setw(4) << fibonacci(x);
+                }
+                rowcount++;
+            }
+            rowcount = 0;
+            std::cout << std::endl;
+        //}
+    }
 }
 
 
