@@ -74,6 +74,8 @@ int main() {
     sf::RectangleShape menu1(sf::Vector2f(200, 50));
     menu1.setFillColor(sf::Color(95,75,139));
     menu1.setPosition(sf::Vector2f(260, 120));
+    sf::Font MyFont;
+    MyFont.LoadFromFile("arial.ttf")
 
     int menuChoice = INT_MAX;
     const int SIZE = 0;
@@ -96,7 +98,7 @@ int main() {
         win.display();
     }
 
-    while (menuChoice != 0) {
+/*    while (menuChoice != 0) {
         menu(menuChoice);
         if (menuChoice == 1) {
             //List matrices
@@ -126,7 +128,7 @@ int main() {
             //Print out Pascal's triangle
             pascalsTriangle();
         }
-    }
+    }*/
     
     return 0;
 }
