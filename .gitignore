@@ -2,3 +2,5 @@ matrixmanip
 .DS_Store
 main.o
 matrix.o
+cmake-build-debug
+.idea/
