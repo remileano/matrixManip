@@ -20,7 +20,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Mouse.hpp>
 
-const int MENUOPT = 9;
+const int MENUOPT = 11;
 
 ////////////////////////////////////////////////////////////////////////////////
 //                          NON-MEMBER FUNCTION PROTOTYPES                    //
@@ -88,24 +88,7 @@ int main() {
     std::vector<Matrix> thisDatabase(SIZE);
     printLogo();
 
-    while (win.isOpen())
-    {
-        sf::Event event;
-        while (win.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                win.close();
-            }
-        }
-
-        win.clear(sf::Color(188,184,201));
-        win.draw(menu1);
-        win.draw(text);
-        win.display();
-    }
-
-/*    while (menuChoice != 0) {
+    while (menuChoice != 0) {
         menu(menuChoice);
         if (menuChoice == 1) {
             //List matrices
@@ -134,8 +117,29 @@ int main() {
         } else if (menuChoice == 9) {
             //Print out Pascal's triangle
             pascalsTriangle();
+        } else if (menuChoice == 10){
+            //open graphical menu
+            while (win.isOpen())
+            {
+                sf::Event event;
+                while (win.pollEvent(event))
+                {
+                    if (event.type == sf::Event::Closed)
+                    {
+                        win.close();
+                    }
+                }
+
+                win.clear(sf::Color(188,184,201));
+                win.draw(menu1);
+                win.draw(text);
+                win.display();
+            }
+        } else if (menuChoice == 11){
+            //display recursive loop
+            fibonacci(30);
         }
-    }*/
+    }
     
     return 0;
 }
@@ -295,8 +299,8 @@ int menu(int &aChoice) {
     std::setw(20) << std::left << "1. List matrices" << std::setw(5) << " " << "7. Clear all (UNDER CONSTRUCTION) \n" <<
     std::setw(20) << std::left << "2. Add a new matrix" << std::setw(5) << " " << "8. Draw a shape (UNDER CONSTRUCTION) \n" <<
     std::setw(20) << "3. Delete a matrix" << std::setw(5) << " " << "9. Pascal's Triangle (UNDER CONSTRUCTION) \n"<<
-    std::setw(20) << "4. Load from file" << std::endl <<
-    std::setw(20) << "5. Save to file \n" <<
+    std::setw(20) << "4. Load from file" << std::setw(5) << " " << "10. Open GUI (UNDER CONSTRUCTION) \n"<<
+    std::setw(20) << "5. Save to file" << std::setw(5) << " " << "11. Recursion (UNDER CONSTRUCTION) \n"<<
     "------------------------------------------------------------------" << std::endl <<
     "Choice (0-" << MENUOPT << "): ";
     std::cin >> aChoice;
