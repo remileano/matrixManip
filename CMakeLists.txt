@@ -19,10 +19,7 @@ include_directories(.)
 add_executable(${EXECUTABLE_NAME}
         main.cpp
         matrix.cpp
-        matrix.h
-        mysavefile.txt
-        mysavefile2.txt
-        readme.txt)
+        matrix.h)
 
 # Detect and add SFML
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
